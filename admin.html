@@ -730,13 +730,41 @@
                 this.renderPropertyTable();
                 this.renderDashboardLeads();
                 
-                // Set initial route ke halaman login secara default
-                const initialRoute = window.location.hash.replace('#', '') || 'login';
+                // Cek status login
+                const isLoggedIn = sessionStorage.getItem('rumahMurahAuth') === 'true';
+
+                // Set initial route
+                let initialRoute = window.location.hash.replace('#', '') || 'admin';
+                
+                // Proteksi route (Auth Guard): Paksa ke admin jika belum login
+                if (!isLoggedIn && initialRoute !== 'admin') {
+                    initialRoute = 'admin';
+                    window.location.hash = 'admin';
+                } else if (isLoggedIn && initialRoute === 'admin') {
+                    // Jika sudah login tapi buka halaman admin, arahkan ke dashboard
+                    initialRoute = 'dashboard';
+                    window.location.hash = 'dashboard';
+                }
+
                 this.navigate(initialRoute, false);
 
-                // Handle hash changes
+                // Handle hash changes dengan proteksi
                 window.addEventListener('hashchange', () => {
-                    const hash = window.location.hash.replace('#', '') || 'login';
+                    let hash = window.location.hash.replace('#', '') || 'admin';
+                    const authStatus = sessionStorage.getItem('rumahMurahAuth') === 'true';
+
+                    // Lempar kembali ke halaman login jika mencoba akses tanpa otorisasi
+                    if (!authStatus && hash !== 'admin') {
+                        window.location.hash = 'admin';
+                        return;
+                    }
+
+                    // Jangan izinkan buka halaman login jika sesi belum dihapus (logout)
+                    if (authStatus && hash === 'admin') {
+                        window.location.hash = 'dashboard';
+                        return;
+                    }
+
                     this.navigate(hash, false);
                 });
             },
@@ -748,17 +776,23 @@
                 btn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl mr-2"></i> Memproses...';
                 btn.disabled = true;
 
-                // Simulasi delay proses autentikasi
+                // Simulasi validasi keamanan ke server
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                    this.navigate('dashboard'); // Arahkan ke dashboard
+                    
+                    // Buat sesi login aktif
+                    sessionStorage.setItem('rumahMurahAuth', 'true');
+                    
+                    // Lanjutkan ke halaman admin dashboard
+                    window.location.hash = 'dashboard'; 
                 }, 800);
             },
 
             logout: function() {
                 if(confirm('Yakin ingin keluar dari dashboard?')) {
-                    this.navigate('login');
+                    sessionStorage.removeItem('rumahMurahAuth'); // Hapus sesi
+                    window.location.hash = 'admin'; // Kembali ke login page
                 }
             },
 
@@ -773,7 +807,7 @@
                 const loginLayout = document.getElementById('login-layout');
                 const dashboardLayout = document.getElementById('dashboard-layout');
 
-                if (viewId === 'login') {
+                if (viewId === 'admin') {
                     loginLayout.classList.remove('hidden');
                     loginLayout.classList.add('flex');
                     dashboardLayout.classList.add('hidden');
