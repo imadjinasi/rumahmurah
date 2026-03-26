@@ -33,9 +33,10 @@
                             700: '#15803d',
                             900: '#14532d',
                         },
-                        accent: {
-                            500: '#f97316', // CTA Orange
-                            600: '#ea580c',
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
                         }
                     }
                 }
@@ -46,1004 +47,1107 @@
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .sticky-bottom-cta { padding-bottom: env(safe-area-inset-bottom); }
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .modal-transition { transition: opacity 0.3s ease, transform 0.3s ease; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
+<body class="bg-gray-50 text-gray-800 font-sans antialiased h-screen overflow-hidden">
 
-    <!-- SHARED: Navigation -->
-    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
-                    <i class="ph-fill ph-house-line text-primary-600 text-3xl mr-2"></i>
-                    <span class="font-bold text-xl tracking-tight text-gray-900">Rumah<span class="text-primary-600">Murah</span></span>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#" onclick="app.navigate('home')" class="text-gray-600 hover:text-primary-600 font-medium transition">Beranda</a>
-                    <a href="#" onclick="app.navigate('listing')" class="text-gray-600 hover:text-primary-600 font-medium transition">Cari Properti</a>
-                    <a href="#tentang" class="text-gray-600 hover:text-primary-600 font-medium transition">Tentang Kami</a>
-                    <a href="#" onclick="app.waContact('Halo admin Rumah Murah, saya ingin konsultasi pengajuan KPR.')" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2 rounded-lg font-medium transition shadow-md shadow-primary-600/20 flex items-center">
-                        <i class="ph ph-whatsapp-logo text-lg mr-2"></i> Hubungi Admin
-                    </a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary-600 focus:outline-none p-2">
-                        <i class="ph ph-list text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
-            <div class="px-4 pt-2 pb-4 space-y-1">
-                <a href="#" onclick="app.navigate('home'); app.toggleMobileMenu()" class="block px-3 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-600 rounded-md">Beranda</a>
-                <a href="#" onclick="app.navigate('listing'); app.toggleMobileMenu()" class="block px-3 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-600 rounded-md">Cari Properti</a>
-                <a href="#" onclick="app.waContact('Halo, saya butuh bantuan cari rumah'); app.toggleMobileMenu()" class="block px-3 py-3 text-base font-medium text-primary-600 bg-primary-50 rounded-md mt-2">
-                    <i class="ph ph-whatsapp-logo inline-block mr-1"></i> Hubungi Admin
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- SHARED: Floating WhatsApp CTA -->
-    <button onclick="app.waContact('Halo Rumah Murah, saya butuh bantuan konsultasi properti.')" class="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-xl shadow-green-500/30 transition-transform transform hover:scale-110 flex items-center justify-center">
-        <i class="ph ph-whatsapp-logo text-3xl"></i>
-    </button>
-
-
-    <!-- ========================================================================= -->
-    <!-- EQUIVALENT TO: index.html (HOME PAGE)                                     -->
-    <!-- ========================================================================= -->
-    <div id="view-home" class="page-view block">
+    <!-- ========================================== -->
+    <!-- PUBLIC WEBSITE LAYOUT                      -->
+    <!-- ========================================== -->
+    <div id="public-layout" class="h-full w-full overflow-y-auto block relative">
         
-        <!-- Hero Section -->
-        <div class="relative bg-white overflow-hidden">
-            <div class="absolute inset-0">
-                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Rumah Modern" class="w-full h-full object-cover opacity-20">
-                <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
-            </div>
-            
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-                <div class="md:w-2/3 lg:w-1/2">
-                    <span class="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-semibold mb-4 border border-primary-200">Dibantu KPR Sampai Akad!</span>
-                    <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl mb-6 leading-tight">
-                        Temukan Rumah Idaman <br>
-                        <span class="text-primary-600">Harga Terjangkau</span>
-                    </h1>
-                    <p class="mt-3 text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl mb-8">
-                        Pilihan rumah murah, lokasi strategis, DP ringan, dan cicilan realistis. Wujudkan impian keluarga Anda memiliki hunian sendiri.
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="app.navigate('listing')" class="w-full sm:w-auto flex items-center justify-center px-8 py-3.5 border border-transparent text-base font-bold rounded-lg text-white bg-accent-500 hover:bg-accent-600 shadow-lg shadow-accent-500/30 transition">
-                            Cari Rumah Sekarang <i class="ph ph-magnifying-glass ml-2"></i>
-                        </button>
-                        <button onclick="app.waContact('Halo, saya ingin konsultasi KPR dan cari rumah yang sesuai gaji saya.')" class="w-full sm:w-auto flex items-center justify-center px-8 py-3.5 border-2 border-primary-600 text-base font-bold rounded-lg text-primary-600 bg-white hover:bg-primary-50 transition">
-                            Konsultasi Gratis <i class="ph ph-whatsapp-logo ml-2 text-lg"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Search Bar -->
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 -mt-8 md:-mt-12 mb-16">
-            <div class="bg-white rounded-xl shadow-xl border border-gray-100 p-4 md:p-6">
-                <form onsubmit="event.preventDefault(); app.navigate('listing');" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 mb-1">Pilih Area</label>
-                        <div class="relative">
-                            <i class="ph ph-map-pin absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <select class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none text-sm font-medium">
-                                <option>Semua Area</option>
-                                <option>Depok & Sekitarnya</option>
-                                <option>Bogor & Cilebut</option>
-                                <option>Tangerang & Tangsel</option>
-                                <option>Bekasi & Cikarang</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 mb-1">Budget Maksimal</label>
-                        <div class="relative">
-                            <i class="ph ph-wallet absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <select class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none text-sm font-medium">
-                                <option>Bebas</option>
-                                <option>Di bawah Rp 300 Juta</option>
-                                <option>Maksimal Rp 500 Juta</option>
-                                <option>Maksimal Rp 800 Juta</option>
-                                <option>Maksimal Rp 1 Miliar</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 mb-1">Tipe Properti</label>
-                        <div class="relative">
-                            <i class="ph ph-house absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <select class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none text-sm font-medium">
-                                <option>Rumah Tapak (Cluster)</option>
-                                <option>Rumah Subsidi</option>
-                                <option>Townhouse</option>
-                                <option>Apartemen</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-4 rounded-lg transition flex justify-center items-center">
-                            Cari Properti
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Featured Properties -->
-        <div class="py-12 bg-gray-50">
+        <!-- Public Navbar -->
+        <nav class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-end mb-8">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Rekomendasi Terbaik</h2>
-                        <p class="text-gray-600 mt-2">Pilihan properti dengan promo menarik minggu ini</p>
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
+                        <i class="ph-fill ph-house-line text-primary-600 text-3xl mr-2"></i>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">Rumah<span class="text-primary-600">Murah</span></span>
                     </div>
-                    <button onclick="app.navigate('listing')" class="hidden md:flex text-primary-600 font-semibold hover:text-primary-700 items-center">
-                        Lihat Semua Katalog <i class="ph ph-arrow-right ml-1"></i>
-                    </button>
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#home" class="text-gray-600 hover:text-primary-600 font-medium transition">Beranda</a>
+                        <a href="#katalog" class="text-gray-600 hover:text-primary-600 font-medium transition">Katalog</a>
+                        <button onclick="app.navigate('admin')" class="text-sm font-semibold text-gray-400 hover:text-gray-900 transition"><i class="ph-fill ph-lock-key"></i> Admin</button>
+                        <button onclick="window.open('https://wa.me/6281234567890', '_blank')" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2 rounded-lg font-medium transition shadow-sm flex items-center">
+                            <i class="ph-fill ph-whatsapp-logo mr-2 text-lg"></i> Hubungi Kami
+                        </button>
+                    </div>
                 </div>
+            </div>
+        </nav>
 
-                <div id="home-featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Injected via JS -->
-                </div>
-                
-                <div class="mt-8 text-center md:hidden">
-                    <button onclick="app.navigate('listing')" class="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 rounded-lg shadow-sm">
-                        Lihat Semua Listing
-                    </button>
-                </div>
+        <!-- Hero Section -->
+        <div id="home" class="relative bg-white pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&w=2000&q=80" alt="Rumah" class="w-full h-full object-cover opacity-10">
+            </div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="inline-block py-1 px-3 rounded-full bg-primary-50 text-primary-700 text-sm font-bold mb-4 border border-primary-200">KPR Dibantu Sampai Akad 🤝</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
+                    Temukan Rumah Idaman <br class="hidden md:block">
+                    <span class="text-primary-600">Harga Terjangkau</span>
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
+                    Pilihan rumah subsidi dan komersil terbaik dengan rincian spesifikasi terlengkap, cicilan flat, dan legalitas SHM yang aman 100%.
+                </p>
+                <button onclick="document.getElementById('katalog').scrollIntoView({behavior: 'smooth'})" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 px-8 rounded-xl transition shadow-lg shadow-primary-600/20 inline-flex items-center">
+                    Lihat Katalog Properti <i class="ph-bold ph-arrow-down ml-2"></i>
+                </button>
             </div>
         </div>
 
-        <!-- How It Works -->
-        <div class="py-16 bg-white">
+        <!-- Catalog Section -->
+        <div id="katalog" class="py-20 bg-gray-50 min-h-screen">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900">Cara Mudah Punya Rumah</h2>
-                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Proses transparan dan anti ribet. Tim Rumah Murah siap mendampingi Anda dari konsultasi awal hingga serah terima kunci.</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900">Katalog Properti</h2>
+                    <p class="text-gray-500 mt-2">Daftar rumah pilihan terbaik yang siap Anda huni</p>
+                </div>
+                <!-- Listing Grid (Diisi oleh JS) -->
+                <div id="public-listing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark-900 py-12 border-t-4 border-primary-500 text-center text-sm text-gray-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2026 Rumah Murah Indonesia. All rights reserved.</p>
+                <button onclick="app.navigate('admin')" class="mt-4 md:mt-0 hover:text-white transition flex items-center"><i class="ph-fill ph-lock-key mr-1"></i> Admin Login</button>
+            </div>
+        </footer>
+
+        <!-- PUBLIC PROPERTY DETAIL MODAL -->
+        <div id="public-modal" class="fixed inset-0 z-50 bg-white overflow-y-auto hidden modal-transition opacity-0 translate-y-4">
+            <div class="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 py-3 flex justify-between items-center shadow-sm">
+                <button onclick="app.closeModal()" class="flex items-center text-gray-600 hover:text-gray-900 font-semibold bg-gray-50 px-4 py-2 rounded-lg transition"><i class="ph-bold ph-arrow-left mr-2"></i> Kembali</button>
+                <div class="font-bold text-gray-900 truncate max-w-md hidden sm:block" id="modal-title-top">Detail Properti</div>
+                <button onclick="app.closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-600 hover:text-red-500 transition"><i class="ph-bold ph-x text-xl"></i></button>
+            </div>
+
+            <div class="max-w-5xl mx-auto pb-24 md:pb-12 bg-white">
+                <div class="w-full h-64 md:h-[450px] bg-gray-200 relative">
+                    <img id="modal-img" src="" class="w-full h-full object-cover">
+                    <div id="modal-badges" class="absolute top-4 left-4 flex flex-col gap-2"></div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                    <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-gray-100 z-0"></div>
-                    
-                    <div class="relative z-10 text-center px-4">
-                        <div class="w-20 h-20 mx-auto bg-primary-50 rounded-full flex items-center justify-center border-4 border-white shadow-sm mb-4 text-primary-600 text-3xl font-bold">1</div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Pilih Properti</h3>
-                        <p class="text-gray-600 text-sm">Cari rumah yang sesuai dengan lokasi incaran dan kemampuan cicilan KPR Anda di website kami.</p>
-                    </div>
-                    
-                    <div class="relative z-10 text-center px-4">
-                        <div class="w-20 h-20 mx-auto bg-primary-50 rounded-full flex items-center justify-center border-4 border-white shadow-sm mb-4 text-primary-600 text-3xl">
-                            <i class="ph-fill ph-chat-circle-text"></i>
+                <div class="p-4 md:p-8 flex flex-col lg:flex-row gap-8">
+                    <!-- Kiri: Detail Lengkap -->
+                    <div class="lg:w-2/3">
+                        <div class="mb-6">
+                            <span id="modal-type" class="text-xs font-bold text-gray-500 uppercase tracking-wider bg-gray-100 px-2 py-1 rounded"></span>
+                            <span id="modal-status" class="text-xs font-bold text-primary-600 uppercase tracking-wider bg-primary-50 px-2 py-1 rounded ml-2"></span>
+                            <h1 id="modal-title" class="text-2xl md:text-4xl font-extrabold text-gray-900 mt-3 mb-2 leading-tight"></h1>
+                            <p class="text-gray-500 flex items-start"><i class="ph-fill ph-map-pin text-gray-400 mr-2 mt-1"></i> <span id="modal-location"></span></p>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Konsultasi & Survei</h3>
-                        <p class="text-gray-600 text-sm">Hubungi admin untuk cek BI Checking, simulasi cicilan fix, dan jadwalkan survei lokasi gratis.</p>
+
+                        <div class="py-6 border-t border-b border-gray-100 mb-8 bg-gray-50 rounded-xl px-6">
+                            <p class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Harga Mulai</p>
+                            <div id="modal-price" class="text-3xl md:text-4xl font-extrabold text-primary-600 mb-2"></div>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center"><i class="ph-fill ph-info text-primary-500 mr-2"></i> Info Properti</h3>
+                        <div id="modal-desc" class="prose text-gray-600 text-sm leading-relaxed mb-8 border border-gray-100 p-4 rounded-xl">Deskripsi properti akan muncul disini.</div>
                     </div>
 
-                    <div class="relative z-10 text-center px-4">
-                        <div class="w-20 h-20 mx-auto bg-primary-50 rounded-full flex items-center justify-center border-4 border-white shadow-sm mb-4 text-primary-600 text-3xl">
-                            <i class="ph-fill ph-handshake"></i>
+                    <!-- Kanan: Sticky CTA -->
+                    <div class="lg:w-1/3">
+                        <div class="sticky top-24 bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+                            <h3 class="font-bold text-lg text-gray-900 mb-4 border-b border-gray-100 pb-3">Berminat?</h3>
+                            <div class="flex items-center mb-6">
+                                <div class="w-14 h-14 rounded-full bg-gray-200 overflow-hidden mr-3"><img src="https://ui-avatars.com/api/?name=Admin+Sales&background=16a34a&color=fff" alt="Admin"></div>
+                                <div><p class="font-bold text-gray-900">Admin Sales</p><p class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-full mt-1 w-max">Online - Siap Bantu KPR</p></div>
+                            </div>
+                            <button id="modal-wa-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-green-500/20 flex items-center justify-center transition"><i class="ph-fill ph-whatsapp-logo text-2xl mr-2"></i> Chat WhatsApp</button>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Akad & Serah Terima</h3>
-                        <p class="text-gray-600 text-sm">Pemberkasan KPR akan kami kawal penuh hingga disetujui bank, dilanjutkan proses akad dan serah terima kunci.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Trust / Why Us -->
-        <div id="tentang" class="py-16 bg-gray-900 text-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <span class="text-primary-400 font-semibold tracking-wider uppercase text-sm">Mengapa Memilih Rumah Murah</span>
-                        <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-6">Partner Terpercaya Untuk Properti Pertama Anda</h2>
-                        <p class="text-gray-400 mb-8 leading-relaxed">
-                            Kami sangat memahami kebingungan pembeli rumah pertama. Rumah Murah hadir untuk memberikan transparansi harga, kepastian legalitas, dan bantuan pengajuan KPR yang maksimal bahkan jika Anda pernah ditolak.
-                        </p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div class="flex items-start">
-                                <i class="ph-fill ph-seal-check text-primary-500 text-2xl mr-3 mt-0.5"></i>
-                                <div>
-                                    <h4 class="font-bold">Legalitas Aman (SHM)</h4>
-                                    <p class="text-sm text-gray-400 mt-1">Sertifikat sudah pecah per kavling dan clean & clear.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ph-fill ph-wallet text-primary-500 text-2xl mr-3 mt-0.5"></i>
-                                <div>
-                                    <h4 class="font-bold">Bebas Biaya Siluman</h4>
-                                    <p class="text-sm text-gray-400 mt-1">Biaya All-in (KPR, BPHTB, Notaris) diinfokan di awal.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ph-fill ph-bank text-primary-500 text-2xl mr-3 mt-0.5"></i>
-                                <div>
-                                    <h4 class="font-bold">KPR Pasti Dibantu</h4>
-                                    <p class="text-sm text-gray-400 mt-1">Bekerja sama dengan banyak bank (Konvensional & Syariah).</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="ph-fill ph-lightning text-primary-500 text-2xl mr-3 mt-0.5"></i>
-                                <div>
-                                    <h4 class="font-bold">Respon Fast Track</h4>
-                                    <p class="text-sm text-gray-400 mt-1">Admin responsif menjawab via WhatsApp setiap hari.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Keluarga Bahagia" class="rounded-2xl shadow-2xl relative z-10">
-                        <div class="absolute -bottom-6 -right-6 w-full h-full border-2 border-primary-500 rounded-2xl z-0 hidden md:block"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- EQUIVALENT TO: listings.html (LISTING PAGE)                               -->
-    <!-- ========================================================================= -->
-    <div id="view-listing" class="page-view hidden bg-gray-50 min-h-screen pb-12">
-        <div class="bg-white border-b border-gray-200 py-4 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <!-- ========================================== -->
+    <!-- LOGIN LAYOUT                               -->
+    <!-- ========================================== -->
+    <div id="login-layout" class="flex h-screen w-full items-center justify-center bg-gray-50 hidden relative">
+        <!-- Background Pattern (Subtle) -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#16a34a_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100 relative z-10 mx-4">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-50 text-primary-600 mb-4 shadow-sm border border-primary-100">
+                    <i class="ph-fill ph-house-line text-4xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Login Admin</h1>
+                <p class="text-gray-500 text-sm mt-2">Selamat datang di Panel Rumah Murah</p>
+            </div>
+
+            <form onsubmit="app.handleLogin(event)" class="space-y-5">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Katalog Properti</h1>
-                    <p class="text-sm text-gray-500 mt-1">Menampilkan pilihan rumah terbaik untuk Anda</p>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="ph-fill ph-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="email" value="admin@rumahmurah.id" required class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition text-sm font-medium">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="ph-fill ph-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="password" value="password123" required class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition text-sm font-medium">
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-3">
+                    <label class="flex items-center text-sm text-gray-600 cursor-pointer font-medium">
+                        <input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500 mr-2 w-4 h-4" checked> Ingat saya
+                    </label>
+                    <a href="#" class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition">Lupa password?</a>
                 </div>
                 
-                <div class="flex items-center space-x-3 w-full sm:w-auto">
-                    <button onclick="document.getElementById('mobile-filter-drawer').classList.toggle('hidden')" class="md:hidden flex-1 flex items-center justify-center bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">
-                        <i class="ph ph-faders mr-2"></i> Filter
-                    </button>
-                    
-                    <div class="relative flex-1 sm:w-48">
-                        <select class="w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent font-medium text-sm">
-                            <option>Paling Relevan</option>
-                            <option>Terbaru</option>
-                            <option>Harga: Termurah</option>
-                            <option>Harga: Termahal</option>
-                        </select>
-                        <i class="ph ph-caret-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-8">
-            <!-- Sidebar Filter -->
-            <div class="hidden md:block w-64 flex-shrink-0">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sticky top-24">
-                    <h3 class="font-bold text-lg text-gray-900 mb-4 flex items-center"><i class="ph ph-faders text-primary-600 mr-2"></i> Filter Pencarian</h3>
-                    
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi</label>
-                        <select class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-primary-500">
-                            <option>Semua Area</option>
-                            <option>Depok</option>
-                            <option>Bogor</option>
-                            <option>Tangerang</option>
-                            <option>Bekasi</option>
-                            <option>Jakarta</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Range Harga</label>
-                        <div class="space-y-2">
-                            <label class="flex items-center text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="price" class="text-primary-600 focus:ring-primary-500 mr-2" checked> Semua Harga
-                            </label>
-                            <label class="flex items-center text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="price" class="text-primary-600 focus:ring-primary-500 mr-2"> < Rp 300 Juta
-                            </label>
-                            <label class="flex items-center text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="price" class="text-primary-600 focus:ring-primary-500 mr-2"> Rp 300 - 500 Juta
-                            </label>
-                            <label class="flex items-center text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="price" class="text-primary-600 focus:ring-primary-500 mr-2"> Rp 500 - 800 Juta
-                            </label>
-                            <label class="flex items-center text-sm text-gray-600 cursor-pointer">
-                                <input type="radio" name="price" class="text-primary-600 focus:ring-primary-500 mr-2"> > Rp 800 Juta
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Kamar Tidur (KT)</label>
-                        <div class="flex gap-2">
-                            <button class="flex-1 py-1.5 border border-primary-500 bg-primary-50 text-primary-700 rounded text-sm font-medium">1+</button>
-                            <button class="flex-1 py-1.5 border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 rounded text-sm font-medium">2+</button>
-                            <button class="flex-1 py-1.5 border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 rounded text-sm font-medium">3+</button>
-                        </div>
-                    </div>
-
-                    <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 rounded-lg transition mt-2">
-                        Terapkan Filter
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Filter Drawer -->
-            <div id="mobile-filter-drawer" class="hidden fixed inset-0 z-50 bg-black/50 md:hidden">
-                <div class="absolute right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white p-5 shadow-xl overflow-y-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-bold text-lg text-gray-900">Filter</h3>
-                        <button onclick="document.getElementById('mobile-filter-drawer').classList.add('hidden')" class="text-gray-500 p-2"><i class="ph ph-x text-xl"></i></button>
-                    </div>
-                    <p class="text-sm text-gray-500 italic mb-4">Pilih kriteria rumah impian Anda.</p>
-                    <button onclick="document.getElementById('mobile-filter-drawer').classList.add('hidden')" class="w-full bg-primary-600 text-white font-bold py-3 rounded-lg mt-6">Selesai</button>
-                </div>
-            </div>
-
-            <!-- Listing Grid -->
-            <div class="flex-1">
-                <div id="listing-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Injected via JS -->
-                </div>
-                
-                <div class="mt-10 flex justify-center">
-                    <button class="bg-white border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-8 rounded-full hover:bg-gray-50 transition shadow-sm">
-                        Muat Lebih Banyak
-                    </button>
-                </div>
+                <button type="submit" id="login-btn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-primary-600/30 flex items-center justify-center mt-6">
+                    Masuk Dashboard
+                </button>
+            </form>
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                <button onclick="app.navigate('home')" class="text-sm font-semibold text-gray-500 hover:text-primary-600 transition flex items-center justify-center w-full">
+                    <i class="ph-bold ph-arrow-left mr-1"></i> Kembali ke Website
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- EQUIVALENT TO: detail.html (PROPERTY DETAIL PAGE)                         -->
-    <!-- ========================================================================= -->
-    <div id="view-detail" class="page-view hidden bg-gray-50 pb-24 md:pb-12">
+    <!-- ========================================== -->
+    <!-- DASHBOARD WRAPPER                          -->
+    <!-- ========================================== -->
+    <div id="dashboard-layout" class="flex h-screen w-full hidden">
+
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900/50 z-20 hidden md:hidden" onclick="app.toggleSidebar()"></div>
+
+    <!-- Sidebar Content -->
+    <aside id="sidebar" class="bg-dark-900 text-gray-300 w-64 flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 z-30 sidebar-transition flex flex-col h-full shadow-xl">
         
-        <!-- Breadcrumb -->
-        <div class="bg-white border-b border-gray-100 py-3 hidden md:block">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center text-sm text-gray-500">
-                    <a href="#" onclick="app.navigate('home')" class="hover:text-primary-600"><i class="ph-fill ph-house mr-1"></i> Beranda</a>
-                    <i class="ph ph-caret-right mx-2 text-gray-300"></i>
-                    <a href="#" onclick="app.navigate('listing')" class="hover:text-primary-600">Katalog Properti</a>
-                    <i class="ph ph-caret-right mx-2 text-gray-300"></i>
-                    <span id="detail-breadcrumb-title" class="text-gray-900 font-medium truncate">Nama Properti</span>
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 bg-dark-900 border-b border-gray-800">
+            <i class="ph-fill ph-house-line text-primary-500 text-3xl mr-2"></i>
+            <span class="font-bold text-xl tracking-tight text-white">Admin<span class="text-primary-500">Panel</span></span>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+            <p class="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Menu Utama</p>
+            
+            <button onclick="app.navigate('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg hover:bg-dark-800 hover:text-white transition group active-nav">
+                <i class="ph ph-squares-four text-xl mr-3 group-hover:text-primary-500 transition"></i>
+                <span class="font-medium">Dashboard</span>
+            </button>
+
+            <button onclick="app.navigate('properties')" id="nav-properties" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg hover:bg-dark-800 hover:text-white transition group">
+                <i class="ph ph-buildings text-xl mr-3 group-hover:text-primary-500 transition"></i>
+                <span class="font-medium">Data Properti</span>
+            </button>
+
+            <button onclick="app.navigate('form')" id="nav-form" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg hover:bg-dark-800 hover:text-white transition group">
+                <i class="ph ph-plus-circle text-xl mr-3 group-hover:text-primary-500 transition"></i>
+                <span class="font-medium">Tambah Properti</span>
+            </button>
+
+            <p class="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-6 mb-2">Manajemen</p>
+
+            <button onclick="app.navigate('leads')" id="nav-leads" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-dark-800 hover:text-white transition group">
+                <div class="flex items-center">
+                    <i class="ph ph-users text-xl mr-3 group-hover:text-primary-500 transition"></i>
+                    <span class="font-medium">Leads / Inbox</span>
+                </div>
+                <span class="bg-primary-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+            </button>
+
+            <button onclick="app.navigate('settings')" id="nav-settings" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg hover:bg-dark-800 hover:text-white transition group">
+                <i class="ph ph-gear text-xl mr-3 group-hover:text-primary-500 transition"></i>
+                <span class="font-medium">Pengaturan Web</span>
+            </button>
+        </div>
+
+        <!-- User Info / Logout -->
+        <div class="p-4 border-t border-gray-800 bg-dark-800/50">
+            <div class="flex items-center">
+                <img src="https://ui-avatars.com/api/?name=Admin+Rumah+Murah&background=16a34a&color=fff" class="w-10 h-10 rounded-full border-2 border-dark-700" alt="Admin">
+                <div class="ml-3">
+                    <p class="text-sm font-semibold text-white">Super Admin</p>
+                    <p class="text-xs text-gray-400">admin@rumahmurah.id</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Mobile Back Button -->
-        <div class="md:hidden bg-white p-4 sticky top-16 z-40 border-b border-gray-100 flex items-center justify-between">
-            <button onclick="app.navigate('listing')" class="text-gray-700 flex items-center font-medium">
-                <i class="ph ph-arrow-left text-xl mr-2"></i> Kembali
+            <button onclick="app.logout()" class="w-full mt-4 flex items-center justify-center px-3 py-2 text-sm text-red-400 border border-red-400/30 rounded-lg hover:bg-red-500/10 transition">
+                <i class="ph ph-sign-out mr-2"></i> Keluar
             </button>
-            <button class="text-gray-500"><i class="ph ph-share-network text-xl"></i></button>
         </div>
+    </aside>
 
-        <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 md:py-8">
-            <div class="flex flex-col lg:flex-row gap-8">
-                
-                <!-- Left Content -->
-                <div class="lg:w-2/3">
-                    
-                    <!-- Gallery -->
-                    <div class="bg-white md:rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                        <div class="relative h-64 sm:h-[400px] w-full bg-gray-200">
-                            <img id="detail-main-img" src="" alt="Property" class="w-full h-full object-cover">
-                            <div id="detail-badge-container" class="absolute top-4 left-4 flex flex-col gap-2"></div>
-                        </div>
-                        <div id="detail-thumbnails" class="flex p-3 gap-3 overflow-x-auto hide-scrollbar bg-gray-50 border-t border-gray-100"></div>
-                    </div>
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT WRAPPER                       -->
+    <!-- ========================================== -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        
+        <!-- Topbar -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10">
+            <div class="flex items-center">
+                <button onclick="app.toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none p-2 mr-2">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+                <h1 id="topbar-title" class="text-xl font-bold text-gray-800">Dashboard Overview</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-400 hover:text-gray-600 relative p-2">
+                    <i class="ph ph-bell text-xl"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+                <button onclick="app.navigate('home')" class="hidden sm:flex items-center text-sm font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition border border-primary-200">
+                    <i class="ph ph-arrow-square-out mr-1.5"></i> Lihat Website
+                </button>
+            </div>
+        </header>
 
-                    <!-- Main Info Header -->
-                    <div class="bg-white md:rounded-2xl shadow-sm border border-gray-100 mt-4 md:mt-6 p-4 md:p-6 lg:p-8">
+        <!-- Dynamic View Container -->
+        <div class="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6 lg:p-8" id="view-container">
+            
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="page-view block">
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h1 id="detail-title" class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">Title Placeholder</h1>
-                                <p class="text-gray-500 flex items-start text-sm md:text-base leading-relaxed">
-                                    <i class="ph-fill ph-map-pin text-gray-400 mr-2 mt-1"></i> <span id="detail-address">Address Placeholder</span>
-                                </p>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Total Properti</p>
+                                <h3 class="text-2xl font-bold text-gray-900">124</h3>
                             </div>
-                            <button class="hidden md:flex flex-shrink-0 text-gray-400 hover:text-red-500 bg-gray-50 p-3 rounded-full transition ml-4">
-                                <i class="ph-fill ph-heart text-xl"></i>
-                            </button>
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="ph-fill ph-buildings text-xl"></i></div>
                         </div>
-
-                        <div class="mt-6 pt-6 border-t border-gray-100">
-                            <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Harga Tunai / KPR Mulai</p>
-                            <div class="text-3xl md:text-4xl font-extrabold text-primary-600" id="detail-price">Rp 0</div>
-                            
-                            <div class="mt-5 flex flex-wrap gap-3">
-                                <div class="bg-orange-50 border border-orange-100 text-orange-800 px-4 py-3 rounded-xl flex items-center shadow-sm">
-                                    <i class="ph-fill ph-calculator text-2xl mr-3 text-orange-500"></i>
-                                    <div>
-                                        <p class="text-[11px] text-orange-600 font-bold uppercase tracking-wide mb-0.5">Estimasi Cicilan</p>
-                                        <p class="font-extrabold text-sm md:text-base" id="detail-installment">Rp 0 / bulan</p>
-                                    </div>
-                                </div>
-                                <div class="bg-green-50 border border-green-100 text-green-800 px-4 py-3 rounded-xl flex items-center shadow-sm">
-                                    <i class="ph-fill ph-money text-2xl mr-3 text-green-500"></i>
-                                    <div>
-                                        <p class="text-[11px] text-green-600 font-bold uppercase tracking-wide mb-0.5">Promo Spesial</p>
-                                        <p class="font-extrabold text-sm md:text-base">DP All-in Mulai 5 Jt</p>
-                                    </div>
-                                </div>
+                        <div class="mt-4 flex items-center text-sm text-green-600 font-medium">
+                            <i class="ph-bold ph-arrow-up-right mr-1"></i> +4 bulan ini
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Properti Aktif</p>
+                                <h3 class="text-2xl font-bold text-gray-900">98</h3>
                             </div>
+                            <div class="p-3 bg-green-50 text-green-600 rounded-lg"><i class="ph-fill ph-check-circle text-xl"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 font-medium">
+                            26 Draft / Terjual
                         </div>
                     </div>
 
-                    <!-- Specs Grid -->
-                    <div class="bg-white md:rounded-2xl shadow-sm border border-gray-100 mt-4 md:mt-6 p-4 md:p-6 lg:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-3">Spesifikasi Detail</h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6" id="detail-specs-grid"></div>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="bg-white md:rounded-2xl shadow-sm border border-gray-100 mt-4 md:mt-6 p-4 md:p-6 lg:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-3">Deskripsi Properti</h3>
-                        <div class="prose prose-sm md:prose-base text-gray-600 max-w-none space-y-4 leading-relaxed" id="detail-description"></div>
-                    </div>
-
-                    <!-- Facilities -->
-                    <div class="bg-white md:rounded-2xl shadow-sm border border-gray-100 mt-4 md:mt-6 p-4 md:p-6 lg:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-3">Nilai Jual & Fasilitas</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8" id="detail-facilities"></div>
-                    </div>
-
-                     <!-- Location Overview -->
-                     <div class="bg-white md:rounded-2xl shadow-sm border border-gray-100 mt-4 md:mt-6 p-4 md:p-6 lg:p-8">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4 border-b border-gray-100 pb-3">Akses & Lokasi Sekitar</h3>
-                        <div class="rounded-xl overflow-hidden bg-gray-200 h-48 mb-6 relative">
-                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Map" class="w-full h-full object-cover opacity-60">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <button class="bg-white/90 backdrop-blur text-gray-800 font-bold py-2.5 px-5 rounded-lg shadow-sm border border-gray-200 flex items-center hover:bg-white transition">
-                                    <i class="ph-fill ph-map-pin mr-2 text-primary-600 text-lg"></i> Buka di Google Maps
-                                </button>
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Leads / Inbox Baru</p>
+                                <h3 class="text-2xl font-bold text-gray-900">45</h3>
                             </div>
+                            <div class="p-3 bg-orange-50 text-orange-600 rounded-lg"><i class="ph-fill ph-users text-xl"></i></div>
                         </div>
-                        <ul class="space-y-3" id="detail-nearby"></ul>
+                        <div class="mt-4 flex items-center text-sm text-green-600 font-medium">
+                            <i class="ph-bold ph-arrow-up-right mr-1"></i> +12% dari minggu lalu
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Total Tayangan</p>
+                                <h3 class="text-2xl font-bold text-gray-900">12.4K</h3>
+                            </div>
+                            <div class="p-3 bg-purple-50 text-purple-600 rounded-lg"><i class="ph-fill ph-eye text-xl"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm text-gray-500 font-medium">
+                            Pengunjung Website
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Sidebar: Sticky Contact -->
-                <div class="lg:w-1/3 mt-6 lg:mt-0 px-4 md:px-0 relative">
-                    <div class="sticky top-24 space-y-6">
+                <!-- Recent Activities & Leads -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Recent Leads Table -->
+                    <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-bold text-gray-900">Leads Masuk Terbaru</h3>
+                            <button onclick="app.navigate('leads')" class="text-sm text-primary-600 font-medium hover:text-primary-700">Lihat Semua</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-gray-600">
+                                <thead class="bg-gray-50 text-gray-500 border-b border-gray-200">
+                                    <tr>
+                                        <th class="px-6 py-3 font-semibold">Nama</th>
+                                        <th class="px-6 py-3 font-semibold">Properti Diminati</th>
+                                        <th class="px-6 py-3 font-semibold">Tanggal</th>
+                                        <th class="px-6 py-3 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100" id="dash-leads-tbody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                        <h3 class="font-bold text-gray-900 mb-4">Aksi Cepat</h3>
+                        <div class="space-y-3">
+                            <button onclick="app.navigate('form')" class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition group">
+                                <div class="flex items-center text-gray-700 group-hover:text-primary-700">
+                                    <div class="bg-gray-100 group-hover:bg-white p-2 rounded mr-3"><i class="ph ph-plus text-lg"></i></div>
+                                    <span class="font-medium">Tambah Properti Baru</span>
+                                </div>
+                                <i class="ph ph-caret-right text-gray-400"></i>
+                            </button>
+                            <button onclick="app.navigate('settings')" class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition group">
+                                <div class="flex items-center text-gray-700">
+                                    <div class="bg-gray-100 p-2 rounded mr-3"><i class="ph ph-whatsapp-logo text-lg"></i></div>
+                                    <span class="font-medium">Ubah Nomor WhatsApp</span>
+                                </div>
+                                <i class="ph ph-caret-right text-gray-400"></i>
+                            </button>
+                            <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-gray-300 transition group">
+                                <div class="flex items-center text-gray-700">
+                                    <div class="bg-gray-100 p-2 rounded mr-3"><i class="ph ph-download-simple text-lg"></i></div>
+                                    <span class="font-medium">Export Data Leads (CSV)</span>
+                                </div>
+                                <i class="ph ph-caret-right text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: PROPERTY LISTING -->
+            <div id="view-properties" class="page-view hidden">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+                    
+                    <!-- Toolbar -->
+                    <div class="p-4 sm:p-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="relative w-full sm:w-72">
+                            <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Cari judul, lokasi, atau ID..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-700 bg-white flex-1 sm:flex-none">
+                                <option>Semua Status</option>
+                                <option>Aktif</option>
+                                <option>Draft</option>
+                                <option>Terjual</option>
+                            </select>
+                            <button onclick="app.navigate('form')" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg flex items-center transition flex-1 sm:flex-none justify-center text-sm shadow-sm">
+                                <i class="ph ph-plus mr-1.5"></i> Tambah Baru
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-600 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-500 border-b border-gray-200 uppercase text-xs tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Properti</th>
+                                    <th class="px-6 py-4 font-semibold">Tipe & Harga</th>
+                                    <th class="px-6 py-4 font-semibold">Lokasi</th>
+                                    <th class="px-6 py-4 font-semibold">Status</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100" id="prop-list-tbody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="p-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-500 bg-gray-50">
+                        <span>Menampilkan 1-5 dari 124 properti</span>
+                        <div class="flex gap-1">
+                            <button class="px-3 py-1 border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50" disabled>Seb</button>
+                            <button class="px-3 py-1 border border-primary-500 rounded bg-primary-50 text-primary-700 font-medium">1</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded bg-white hover:bg-gray-50">2</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded bg-white hover:bg-gray-50">3</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded bg-white hover:bg-gray-50">Sel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: ADD/EDIT PROPERTY FORM -->
+            <div id="view-form" class="page-view hidden">
+                <form onsubmit="event.preventDefault(); app.saveProperty();" class="max-w-5xl mx-auto space-y-6 pb-24">
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-sm text-gray-500">Lengkapi data properti untuk ditampilkan di website.</p>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="app.navigate('properties')" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium transition">Batal</button>
+                            <button type="submit" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition shadow-sm flex items-center">
+                                <i class="ph ph-floppy-disk mr-2"></i> Simpan Properti
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 1: Informasi Dasar -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-info text-primary-500 mr-2 text-xl"></i> Informasi Dasar
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Judul Listing <span class="text-red-500">*</span></label>
+                                <input type="text" placeholder="Contoh: Perumahan Asri Maja DP 0%" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition">
+                                <p class="text-xs text-gray-400 mt-1">Gunakan judul yang menarik, sertakan keunggulan utama (max 70 char).</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Tipe Properti <span class="text-red-500">*</span></label>
+                                <select required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white">
+                                    <option value="">Pilih Tipe</option>
+                                    <option>Rumah Tapak (Cluster)</option>
+                                    <option>Rumah Subsidi</option>
+                                    <option>Townhouse</option>
+                                    <option>Apartemen</option>
+                                    <option>Tanah Kavling</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Status Penjualan <span class="text-red-500">*</span></label>
+                                <select required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white">
+                                    <option value="aktif">Aktif (Tampil di Web)</option>
+                                    <option value="draft">Draft (Sembunyikan)</option>
+                                    <option value="terjual">Terjual (Tampil dengan label Sold)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Harga & Promo -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-tag text-primary-500 mr-2 text-xl"></i> Harga & Promo
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Harga Tunai / KPR Mulai <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">Rp</span>
+                                    <input type="text" placeholder="350.000.000" required class="w-full border border-gray-300 rounded-lg pl-12 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition font-medium">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Estimasi Cicilan per Bulan</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">Rp</span>
+                                    <input type="text" placeholder="2.500.000" class="w-full border border-gray-300 rounded-lg pl-12 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition font-medium">
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada skema cicilan/KPR.</p>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Label / Badge Promo</label>
+                                <input type="text" placeholder="Contoh: DP 0%, Bebas Biaya KPR, Dekat Stasiun (Pisahkan dengan koma)" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Lokasi -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-map-pin text-primary-500 mr-2 text-xl"></i> Lokasi Properti
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kota / Kabupaten <span class="text-red-500">*</span></label>
+                                <select required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition bg-white">
+                                    <option value="">Pilih Kota</option>
+                                    <option>Depok</option>
+                                    <option>Bogor</option>
+                                    <option>Tangerang</option>
+                                    <option>Tangerang Selatan</option>
+                                    <option>Bekasi</option>
+                                    <option>Jakarta Selatan</option>
+                                    <option>Lebak / Maja</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan / Area Spesifik</label>
+                                <input type="text" placeholder="Contoh: Sawangan, Cilebut, Bintaro" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
+                                <textarea rows="2" placeholder="Masukkan alamat lengkap perumahan..." class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition"></textarea>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps (URL)</label>
+                                <input type="url" placeholder="https://goo.gl/maps/..." class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition text-blue-600">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Spesifikasi -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-ruler text-primary-500 mr-2 text-xl"></i> Spesifikasi Teknis
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Luas Tanah (LT)</label>
+                                <div class="relative">
+                                    <input type="number" placeholder="60" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">m²</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Luas Bangunan (LB)</label>
+                                <div class="relative">
+                                    <input type="number" placeholder="36" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">m²</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kamar Tidur (KT)</label>
+                                <input type="number" placeholder="2" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Kamar Mandi (KM)</label>
+                                <input type="number" placeholder="1" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Carport (Mobil)</label>
+                                <input type="number" placeholder="1" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Daya Listrik</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition bg-white">
+                                    <option>1300 Watt</option>
+                                    <option>2200 Watt</option>
+                                    <option>3500 Watt</option>
+                                    <option>Lainnya</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Sertifikat / Legalitas <span class="text-red-500">*</span></label>
+                                <select required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition bg-white">
+                                    <option value="">Pilih Sertifikat</option>
+                                    <option>SHM - Sertifikat Hak Milik</option>
+                                    <option>SHGB - Sertifikat Hak Guna Bangunan</option>
+                                    <option>AJB - Akta Jual Beli</option>
+                                    <option>Lainnya</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Fasilitas & Deskripsi -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-text-align-left text-primary-500 mr-2 text-xl"></i> Fasilitas & Deskripsi
+                        </h3>
                         
-                        <!-- Agent Box -->
-                        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 bg-primary-50 rounded-bl-full -z-0"></div>
-                            
-                            <h3 class="font-bold text-lg text-gray-900 mb-4 border-b border-gray-100 pb-3 relative z-10">Hubungi Agen Marketing</h3>
-                            
-                            <div class="flex items-center mb-6 relative z-10">
-                                <div class="w-16 h-16 rounded-full bg-gray-200 overflow-hidden mr-4 border-2 border-white shadow-md">
-                                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Agent" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <p class="font-bold text-gray-900 text-lg">Budi RumahMurah</p>
-                                    <p class="text-xs text-green-700 font-bold flex items-center bg-green-100 px-2.5 py-1 rounded-full mt-1 w-max">
-                                        <i class="ph-fill ph-check-circle mr-1"></i> Fast Response (Online)
-                                    </p>
-                                </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Fasilitas Unggulan (Centang yang sesuai)</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Bebas Banjir</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Keamanan 24 Jam</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>One Gate System</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Masuk Mobil</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Dekat Stasiun</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Dekat Tol</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Taman Bermain</span></label>
+                                <label class="flex items-center space-x-2 text-sm text-gray-700"><input type="checkbox" class="rounded text-primary-600 focus:ring-primary-500"> <span>Masjid/Mushola</span></label>
                             </div>
-
-                            <button onclick="app.waContact('Halo mas Budi, saya tertarik dan ingin minta Price List untuk properti di Rumah Murah.')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center transition shadow-lg shadow-green-500/30 mb-3 text-lg">
-                                <i class="ph-fill ph-whatsapp-logo text-2xl mr-2"></i> Chat WhatsApp
-                            </button>
-                            <button class="w-full bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3.5 px-4 rounded-xl flex items-center justify-center transition">
-                                <i class="ph-fill ph-phone-call text-xl mr-2 text-primary-600"></i> Telepon Sekarang
-                            </button>
                         </div>
 
-                        <!-- Inquiry Form -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hidden md:block">
-                            <h3 class="font-bold text-gray-900 mb-2">Jadwalkan Survei / Tanya Detail</h3>
-                            <p class="text-sm text-gray-500 mb-5">Tinggalkan nomor WA Anda, kami yang akan menghubungi kembali.</p>
-                            
-                            <form onsubmit="event.preventDefault(); alert('Terima kasih! Tim marketing kami akan segera menghubungi Anda via WhatsApp.');">
-                                <div class="mb-4">
-                                    <input type="text" placeholder="Nama Lengkap Anda" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 font-medium">
-                                </div>
-                                <div class="mb-4">
-                                    <input type="tel" placeholder="Nomor WhatsApp (Cth: 0812...)" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 font-medium">
-                                </div>
-                                <div class="mb-4">
-                                    <textarea placeholder="Pesan Anda (Bisa KPR? Lokasi persis? dll)..." rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 font-medium"></textarea>
-                                </div>
-                                <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 rounded-lg transition shadow-md shadow-primary-600/20">
-                                    Kirim Pesan
-                                </button>
-                            </form>
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Lengkap <span class="text-red-500">*</span></label>
+                            <textarea rows="6" placeholder="Jelaskan detail properti, keunggulan akses, spesifikasi bangunan, dan promo KPR secara menarik..." required class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition"></textarea>
+                            <p class="text-xs text-gray-400 mt-1">Gunakan bahasa yang persuasif (sales-oriented) dan informatif.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Sticky Mobile Bottom CTA -->
-        <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-40 sticky-bottom-cta flex gap-3">
-            <button class="flex-[1] bg-white border border-gray-300 text-gray-700 font-bold py-3.5 rounded-xl flex items-center justify-center text-sm">
-                <i class="ph-fill ph-phone text-xl text-primary-600"></i>
-            </button>
-            <button onclick="app.waContact('Halo, saya mau info PL & detail properti di Rumah Murah.')" class="flex-[4] bg-green-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center text-base shadow-lg shadow-green-500/30">
-                <i class="ph-fill ph-whatsapp-logo text-xl mr-2"></i> Tanya Admin (WA)
-            </button>
-        </div>
-
-    </div>
-
-    <!-- SHARED: Bottom CTA Area for non-detail pages -->
-    <div id="shared-bottom-cta" class="bg-primary-600 py-16 hidden">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Masih Bingung Pilih Rumah yang Tepat?</h2>
-            <p class="text-primary-100 text-lg mb-8">Jangan ragu, konsultasikan kebutuhan dan budget Anda (Gaji, BI Checking). Tim kami mencarikan properti yang paling pas tanpa dipungut biaya.</p>
-            <button onclick="app.waContact('Halo, saya ingin konsultasi mencari rumah sesuai gaji/budget saya.')" class="bg-white text-primary-700 font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:bg-gray-50 transition transform hover:-translate-y-1 inline-flex items-center">
-                <i class="ph-fill ph-whatsapp-logo text-2xl mr-2 text-green-500"></i> Chat WhatsApp Sekarang
-            </button>
-        </div>
-    </div>
-
-    <!-- SHARED: Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-12 border-t-4 border-primary-600 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center mb-4">
-                        <i class="ph-fill ph-house-line text-primary-500 text-3xl mr-2"></i>
-                        <span class="font-bold text-2xl tracking-tight text-white">Rumah<span class="text-primary-500">Murah</span></span>
+                    <!-- Card 6: Upload Media -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5 flex items-center">
+                            <i class="ph ph-image text-primary-500 mr-2 text-xl"></i> Foto Properti
+                        </h3>
+                        
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition cursor-pointer flex flex-col items-center justify-center">
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-primary-500">
+                                <i class="ph ph-upload-simple text-3xl"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Klik atau Drag & Drop foto ke sini</h4>
+                            <p class="text-sm text-gray-500 mb-4">Format JPG, PNG max 2MB per file. (Gunakan foto landscape untuk hasil terbaik)</p>
+                            <button type="button" class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg text-sm shadow-sm hover:border-primary-500 hover:text-primary-600 transition">Pilih File</button>
+                        </div>
+                        
+                        <!-- Simulated Uploaded Preview -->
+                        <div class="mt-6 flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+                            <div class="relative w-32 h-24 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0 group">
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&w=300&q=80" class="w-full h-full object-cover" alt="preview">
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                    <button type="button" class="text-white hover:text-red-400"><i class="ph-fill ph-trash text-xl"></i></button>
+                                </div>
+                                <span class="absolute top-1 left-1 bg-primary-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">Utama</span>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
-                        Platform marketplace properti terpercaya di Indonesia. Fokus kami membantu milenial dan keluarga muda mendapatkan rumah pertama dengan legalitas aman (SHM) dan proses KPR yang dibantu tuntas.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition text-white"><i class="ph-fill ph-facebook-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition text-white"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition text-white"><i class="ph-fill ph-youtube-logo text-xl"></i></a>
+
+                    <div class="flex justify-end pt-4 pb-12">
+                         <button type="submit" class="px-8 py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-base font-bold transition shadow-lg shadow-primary-600/30 flex items-center w-full md:w-auto justify-center">
+                            <i class="ph ph-floppy-disk mr-2 text-xl"></i> Simpan Listing Properti
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- VIEW: LEADS INBOX -->
+            <div id="view-leads" class="page-view hidden">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full">
+                    
+                    <div class="p-4 sm:p-6 border-b border-gray-200 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">Inbox / Leads Konsumen</h2>
+                            <p class="text-sm text-gray-500">Data konsumen yang menghubungi via Form Website.</p>
+                        </div>
+                        <button class="hidden sm:flex bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded-lg items-center transition text-sm shadow-sm">
+                            <i class="ph ph-download-simple mr-1.5"></i> Export CSV
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead class="bg-gray-50 text-gray-500 border-b border-gray-200 uppercase text-xs tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Tanggal Masuk</th>
+                                    <th class="px-6 py-4 font-semibold">Nama Konsumen</th>
+                                    <th class="px-6 py-4 font-semibold">No. WhatsApp</th>
+                                    <th class="px-6 py-4 font-semibold">Properti Diminati</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Aksi (Follow Up)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 bg-green-50/30">
+                                    <td class="px-6 py-4 text-xs">Hari ini, 09:15</td>
+                                    <td class="px-6 py-4 font-semibold text-gray-900 flex items-center">
+                                        <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span> Bpk. Andi Susanto
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">0812-3456-7890</td>
+                                    <td class="px-6 py-4">Griya Asri Cilebut</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button onclick="window.open('https://wa.me/6281234567890', '_blank')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded text-xs font-bold shadow-sm inline-flex items-center">
+                                            <i class="ph-fill ph-whatsapp-logo mr-1"></i> Balas WA
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 bg-green-50/30">
+                                    <td class="px-6 py-4 text-xs">Hari ini, 08:30</td>
+                                    <td class="px-6 py-4 font-semibold text-gray-900 flex items-center">
+                                        <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span> Rina Gunawan
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">0819-8765-4321</td>
+                                    <td class="px-6 py-4">Cluster Pesona Sawangan DP 0%</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded text-xs font-bold shadow-sm inline-flex items-center">
+                                            <i class="ph-fill ph-whatsapp-logo mr-1"></i> Balas WA
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-xs text-gray-400">Kemarin, 14:20</td>
+                                    <td class="px-6 py-4 text-gray-700 flex items-center">
+                                        <span class="w-2 h-2 rounded-full bg-gray-300 mr-2"></span> Deni Pratama
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">0857-1122-3344</td>
+                                    <td class="px-6 py-4">Perumahan Subsidi Maja Asri</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <button class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-3 py-1.5 rounded text-xs font-bold shadow-sm inline-flex items-center">
+                                            <i class="ph ph-check mr-1"></i> Selesai
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                
-                <div>
-                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Navigasi (Pages)</h4>
-                    <ul class="space-y-2 text-sm font-medium">
-                        <li><a href="#" onclick="app.navigate('home')" class="hover:text-primary-400 transition">Beranda (index.html)</a></li>
-                        <li><a href="#" onclick="app.navigate('listing')" class="hover:text-primary-400 transition">Katalog (listings.html)</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition">Simulasi KPR Bank</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition">Syarat & Ketentuan KPR</a></li>
-                    </ul>
+            </div>
+
+            <!-- VIEW: SETTINGS -->
+            <div id="view-settings" class="page-view hidden max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-2 border-b border-gray-100 pb-3"><i class="ph ph-headset text-primary-500 mr-2"></i> Pengaturan Kontak Admin</h2>
+                    <p class="text-sm text-gray-500 mb-6">Kontak ini akan digunakan pada semua tombol WhatsApp di website depan.</p>
+                    
+                    <form onsubmit="event.preventDefault(); alert('Pengaturan Berhasil Disimpan!');">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Nomor WhatsApp Penerima Leads</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">+62</span>
+                                    <input type="text" value="81234567890" class="w-full border border-gray-300 rounded-lg pl-12 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none">
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Ganti angka 0 di depan dengan format. Contoh: 812...</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Pesan Template WhatsApp</label>
+                                <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none text-gray-600">Halo admin Rumah Murah, saya tertarik dengan properti di website...</textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="px-6 py-2.5 bg-dark-900 hover:bg-black text-white rounded-lg text-sm font-medium transition shadow-sm">Simpan Kontak</button>
+                    </form>
                 </div>
-                
-                <div>
-                    <h4 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Kantor Pemasaran</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start">
-                            <i class="ph-fill ph-map-pin text-primary-500 text-lg mr-2 mt-0.5"></i>
-                            <span class="leading-relaxed">Jl. Margonda Raya No. 123,<br>Kota Depok, Jawa Barat 16423</span>
-                        </li>
-                        <li class="flex items-center font-bold text-white">
-                            <i class="ph-fill ph-whatsapp-logo text-green-500 text-lg mr-2"></i>
-                            <span>0812-3456-7890</span>
-                        </li>
-                    </ul>
+
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-2 border-b border-gray-100 pb-3"><i class="ph ph-globe text-primary-500 mr-2"></i> Pengaturan Website Basic (SEO)</h2>
+                    
+                    <form onsubmit="event.preventDefault(); alert('SEO Berhasil Disimpan!');">
+                        <div class="space-y-5 mb-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Judul Website (Meta Title)</label>
+                                <input type="text" value="Rumah Murah - Temukan Hunian Idaman Terjangkau" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Website (Meta Description)</label>
+                                <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none text-gray-600">Platform marketplace properti terpercaya di Indonesia. Fokus membantu milenial dan keluarga muda mendapatkan rumah pertama dengan legalitas aman (SHM) dan proses KPR mudah.</textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="px-6 py-2.5 bg-dark-900 hover:bg-black text-white rounded-lg text-sm font-medium transition shadow-sm">Simpan Pengaturan Web</button>
+                    </form>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-10 pt-6 text-sm text-center md:text-left flex flex-col md:flex-row justify-between text-gray-500">
-                <p>&copy; 2026 RumahMurah Indonesia. Hak Cipta Dilindungi.</p>
-            </div>
+
         </div>
-    </footer>
+    </main>
+    </div> <!-- Tutup dashboard-layout -->
 
     <!-- Application Script -->
     <script>
-        // --- REALISTIC INDONESIAN MOCK DATA ---
-        const propertyData = [
-            {
-                id: 'p1',
-                title: 'Griya Asri Cilebut - Dekat Stasiun',
-                priceFormatted: 'Rp 350 Juta',
-                installment: 'Rp 2,5 Juta',
-                location: 'Cilebut, Bogor',
-                fullAddress: 'Jl. Pendidikan, Cilebut Barat, Kabupaten Bogor',
-                type: 'Rumah Cluster',
-                bedrooms: 2,
-                bathrooms: 1,
-                landArea: 60, // LT
-                buildingArea: 36, // LB
-                carport: 1,
-                certificate: 'SHM + IMB',
-                status: 'Sisa 3 Unit',
-                badges: ['5 Mnt Stasiun', 'Free Biaya KPR'],
-                images: [
-                    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: `Griya Asri Cilebut merupakan pilihan paling masuk akal bagi Anda generasi milenial yang bermobilitas tinggi ke Jakarta menggunakan KRL Commuter Line. Jarak ke stasiun hanya 5 menit naik motor!
-                <br><br>
-                <strong>PROMO BULAN INI:</strong><br>
-                - Cukup Booking Fee 3 Juta All-in<br>
-                - Bebas Biaya KPR, BPHTB, Asuransi, Notaris, Balik Nama<br>
-                - Gratis Kanopi & Mesin Air Semi Jetpump`,
-                facilities: ['One Gate System', 'Keamanan 24 Jam', 'Row Jalan 6 Meter', 'Taman Bermain Anak'],
-                nearby: [
-                    { name: 'Stasiun KRL Cilebut', distance: '5 Menit' },
-                    { name: 'Tol BORR', distance: '15 Menit' },
-                    { name: 'Pasar Tradisional', distance: '10 Menit' }
-                ]
-            },
-            {
-                id: 'p2',
-                title: 'Cluster Pesona Sawangan DP 0%',
-                priceFormatted: 'Rp 480 Juta',
-                installment: 'Rp 3,2 Juta',
-                location: 'Sawangan, Depok',
-                fullAddress: 'Jl. Raya Pengasinan, Sawangan, Kota Depok',
-                type: 'Rumah Tapak',
-                bedrooms: 2,
-                bathrooms: 1,
-                landArea: 72,
-                buildingArea: 45,
-                carport: 1,
-                certificate: 'SHM (Sudah Pecah)',
-                status: 'Tersedia',
-                badges: ['DP 0%', 'Bisa KPR Bank Syariah'],
-                images: [
-                    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: 'Hunian idaman dengan konsep desain Scandinavian kekinian di lokasi super strategis Sawangan. Lingkungan sudah terbentuk dan ramai. Spesifikasi bangunan bata merah, atap baja ringan, kusen aluminium (bebas rayap). DP benar-benar 0%, proses KPR dibantu tuntas!',
-                facilities: ['Bebas Banjir', 'Air Tanah Jernih', 'Masjid Dalam Komplek', 'Masuk Mobil'],
-                nearby: [
-                    { name: 'Pintu Tol Sawangan (Desari)', distance: '10 Menit' },
-                    { name: 'RSUD Kota Depok', distance: '12 Menit' },
-                    { name: 'The Park Sawangan Mall', distance: '15 Menit' }
-                ]
-            },
-            {
-                id: 'p3',
-                title: 'Townhouse Eksklusif Jagakarsa',
-                priceFormatted: 'Rp 1,85 Miliar',
-                installment: 'Rp 14 Juta',
-                location: 'Jagakarsa, Jaksel',
-                fullAddress: 'Jl. Moh Kahfi II, Jagakarsa, Jakarta Selatan',
-                type: 'Townhouse',
-                bedrooms: 3,
-                bathrooms: 3,
-                landArea: 80,
-                buildingArea: 120,
-                carport: 2,
-                certificate: 'SHM + IMB + PBB',
-                status: 'Indent 4 Bulan',
-                badges: ['Rooftop Area', 'Smart Home'],
-                images: [
-                    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: 'Tinggal di Jakarta Selatan bukan lagi sekadar impian. Townhouse mewah 3 lantai (dilengkapi Rooftop untuk bersantai) dengan spesifikasi bangunan premium. Dilengkapi Smart Door Lock & CCTV terintegrasi ke HP Anda. Investasi yang terus naik setiap tahun!',
-                facilities: ['Underground Cable', 'Security & CCTV 24 Jam', 'Lebar Jalan 7 Meter', 'Balkon Kaca Tempered'],
-                nearby: [
-                    { name: 'Stasiun Lenteng Agung', distance: '10 Menit' },
-                    { name: 'Tol TB Simatupang', distance: '15 Menit' },
-                    { name: 'Kebun Binatang Ragunan', distance: '15 Menit' }
-                ]
-            },
-            {
-                id: 'p4',
-                title: 'Perumahan Subsidi Maja Asri',
-                priceFormatted: 'Rp 181 Juta',
-                installment: 'Rp 1,1 Juta (Flat)',
-                location: 'Maja, Lebak',
-                fullAddress: 'Kawasan Kota Baru Terpadu Maja, Lebak, Banten',
-                type: 'Rumah Subsidi',
-                bedrooms: 2,
-                bathrooms: 1,
-                landArea: 60,
-                buildingArea: 27,
-                carport: 1,
-                certificate: 'HGB (Bisa SHM)',
-                status: 'Tersedia Banyak',
-                badges: ['Subsidi Pemerintah', 'Cicilan Flat'],
-                images: [
-                    'https://images.unsplash.com/photo-1510627498534-cf7e9002facc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: 'Berhenti ngontrak sekarang juga! Program FLPP Pemerintah dengan cicilan sangat ringan (FLAT/Tetap 5% sampai lunas 15/20 tahun). Berada di kawasan pengembangan Kota Baru yang akan sangat pesat ke depannya.',
-                facilities: ['Jalan Utama Cor Beton', 'Air PDAM Mandiri', 'Fasum Taman & Mushola'],
-                nearby: [
-                    { name: 'Stasiun KRL Maja', distance: '10 Menit' },
-                    { name: 'Pasar Tradisional Maja', distance: '8 Menit' }
-                ]
-            },
-            {
-                id: 'p5',
-                title: 'Kemang Pratama Bekasi (Secondary)',
-                priceFormatted: 'Rp 950 Juta',
-                installment: 'Rp 7,5 Juta',
-                location: 'Rawalumbu, Bekasi',
-                fullAddress: 'Kawasan Kemang Pratama Regency, Bekasi Timur',
-                type: 'Rumah Secondary',
-                bedrooms: 3,
-                bathrooms: 2,
-                landArea: 90,
-                buildingArea: 80,
-                carport: 1,
-                certificate: 'SHM',
-                status: 'BU (Bisa Nego)',
-                badges: ['Siap Huni', 'Bebas Banjir'],
-                images: [
-                    'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: 'Dijual Cepat Butuh Uang (BU). Rumah seken sangat terawat di lingkungan elit Kemang Pratama Bekasi. Bangunan menghadap timur (matahari pagi), sirkulasi udara sangat bagus. Lingkungan asri, jalan lebar 3 mobil.',
-                facilities: ['Cluster Ketat (Tinggalkan KTP)', 'Sport Club & Kolam Renang Kawasan', 'Dekat Sekolah Al-Azhar'],
-                nearby: [
-                    { name: 'Pintu Tol Bekasi Barat', distance: '15 Menit' },
-                    { name: 'RS Mitra Keluarga', distance: '10 Menit' }
-                ]
-            },
-            {
-                id: 'p6',
-                title: 'Bintaro Jaya Sektor 7',
-                priceFormatted: 'Rp 1,5 Miliar',
-                installment: 'Rp 11 Juta',
-                location: 'Bintaro, Tangsel',
-                fullAddress: 'Bintaro Jaya Sektor 7, Tangerang Selatan',
-                type: 'Rumah',
-                bedrooms: 4,
-                bathrooms: 3,
-                landArea: 120,
-                buildingArea: 100,
-                carport: 2,
-                certificate: 'SHM',
-                status: 'Tersedia',
-                badges: ['Premium Area'],
-                images: [
-                    'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                ],
-                description: 'Hunian premium di jantung Bintaro Jaya. Akses sangat mudah kemana-mana. Kualitas bangunan kelas atas developer terpercaya.',
-                facilities: ['Lingkungan Bintaro', 'Taman Hijau', 'Dekat Mall'],
-                nearby: [
-                    { name: 'Bintaro Xchange Mall', distance: '5 Menit' },
-                    { name: 'Stasiun Jurangmangu', distance: '7 Menit' },
-                    { name: 'Pintu Tol Pondok Aren', distance: '5 Menit' }
-                ]
-            }
+        // Mock Data for Dashboard
+        const mockProperties = [
+            { id: 'RM-001', title: 'Griya Asri Cilebut - Dekat Stasiun', type: 'Rumah Cluster', price: 'Rp 350.000.000', location: 'Cilebut, Bogor', status: 'Aktif', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&w=800&q=80' },
+            { id: 'RM-002', title: 'Cluster Pesona Sawangan DP 0%', type: 'Rumah Tapak', price: 'Rp 480.000.000', location: 'Sawangan, Depok', status: 'Aktif', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&w=800&q=80' },
+            { id: 'RM-003', title: 'Perumahan Subsidi Maja Asri', type: 'Rumah Subsidi', price: 'Rp 181.000.000', location: 'Maja, Lebak', status: 'Draft', img: 'https://images.unsplash.com/photo-1510627498534-cf7e9002facc?ixlib=rb-4.0.3&w=800&q=80' },
+            { id: 'RM-004', title: 'Townhouse Eksklusif Jagakarsa', type: 'Townhouse', price: 'Rp 1.850.000.000', location: 'Jagakarsa, Jaksel', status: 'Aktif', img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&w=800&q=80' },
+            { id: 'RM-005', title: 'Kemang Pratama Bekasi BU', type: 'Rumah Secondary', price: 'Rp 950.000.000', location: 'Rawalumbu, Bekasi', status: 'Terjual', img: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&w=800&q=80' }
         ];
 
-        // --- SPA ROUTING LOGIC ---
         const app = {
-            currentView: 'home',
-            waNumber: '6281234567890', 
-
             init: function() {
-                this.renderFeatured();
-                this.renderListing();
+                this.renderPublicListings();
+                this.renderPropertyTable();
+                this.renderDashboardLeads();
                 
-                // Read URL parameters/hash to simulate actual page loading
-                const hash = window.location.hash.replace('#', '');
-                if(hash.startsWith('detail-')) {
-                    const id = hash.split('-')[1];
-                    this.navigate('detail', id, false);
-                } else if (hash === 'listings' || hash === 'listing') {
-                    this.navigate('listing', null, false);
-                } else {
-                    this.navigate('home', null, false);
+                // Cek status login
+                const isLoggedIn = sessionStorage.getItem('rumahMurahAuth') === 'true';
+
+                // Set initial route
+                let initialRoute = window.location.hash.replace('#', '') || 'home'; // default ke home
+                
+                // Proteksi route (Auth Guard)
+                if (!isLoggedIn && initialRoute !== 'admin' && initialRoute !== 'home') {
+                    initialRoute = 'home';
+                    window.location.hash = 'home';
+                } else if (isLoggedIn && initialRoute === 'admin') {
+                    // Jika sudah login tapi buka halaman admin, arahkan ke dashboard
+                    initialRoute = 'dashboard';
+                    window.location.hash = 'dashboard';
                 }
 
-                // Handle browser back button smoothly using hashchange instead of popstate
+                this.navigate(initialRoute, false);
+
+                // Handle hash changes dengan proteksi
                 window.addEventListener('hashchange', () => {
-                     const currentHash = window.location.hash.replace('#', '');
-                     if(currentHash.startsWith('detail-')) {
-                         this.navigate('detail', currentHash.split('-')[1], false);
-                     } else if (currentHash === 'listings' || currentHash === 'listing') {
-                         this.navigate('listing', null, false);
-                     } else {
-                         this.navigate('home', null, false);
-                     }
+                    let hash = window.location.hash.replace('#', '') || 'home';
+                    const authStatus = sessionStorage.getItem('rumahMurahAuth') === 'true';
+
+                    // Lempar kembali ke home jika mencoba akses dashboard tanpa otorisasi
+                    if (!authStatus && hash !== 'admin' && hash !== 'home') {
+                        window.location.hash = 'home';
+                        return;
+                    }
+
+                    // Jangan izinkan buka halaman login jika sesi belum dihapus (logout)
+                    if (authStatus && hash === 'admin') {
+                        window.location.hash = 'dashboard';
+                        return;
+                    }
+
+                    this.navigate(hash, false);
                 });
             },
 
-            // The core router replacing standard <a> links
-            navigate: function(viewId, propertyId = null, pushHistory = true) {
-                // Hide all sections
+            handleLogin: function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('login-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl mr-2"></i> Memproses...';
+                btn.disabled = true;
+
+                // Simulasi validasi keamanan ke server
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    
+                    // Buat sesi login aktif
+                    sessionStorage.setItem('rumahMurahAuth', 'true');
+                    
+                    // Lanjutkan ke halaman admin dashboard
+                    window.location.hash = 'dashboard'; 
+                }, 800);
+            },
+
+            logout: function() {
+                if(confirm('Yakin ingin keluar dari dashboard?')) {
+                    sessionStorage.removeItem('rumahMurahAuth'); // Hapus sesi
+                    window.location.hash = 'admin'; // Kembali ke login page
+                }
+            },
+
+            navigate: function(viewId, updateHash = true) {
+                // Update URL securely
+                if (updateHash) {
+                    try { window.location.hash = viewId; } 
+                    catch(e) { console.warn("Environment restricts hash modification"); }
+                }
+
+                // Handle Layout Toggle (Pisahkan Tampilan Public, Login vs Dashboard)
+                const publicLayout = document.getElementById('public-layout');
+                const loginLayout = document.getElementById('login-layout');
+                const dashboardLayout = document.getElementById('dashboard-layout');
+
+                if (viewId === 'home') {
+                    publicLayout.classList.remove('hidden');
+                    publicLayout.classList.add('block');
+                    loginLayout.classList.add('hidden');
+                    loginLayout.classList.remove('flex');
+                    dashboardLayout.classList.add('hidden');
+                    dashboardLayout.classList.remove('flex');
+                    return; // Stop disini untuk public website
+                } else if (viewId === 'admin') {
+                    publicLayout.classList.add('hidden');
+                    publicLayout.classList.remove('block');
+                    loginLayout.classList.remove('hidden');
+                    loginLayout.classList.add('flex');
+                    dashboardLayout.classList.add('hidden');
+                    dashboardLayout.classList.remove('flex');
+                    return; // Stop disini untuk form login
+                } else {
+                    publicLayout.classList.add('hidden');
+                    publicLayout.classList.remove('block');
+                    loginLayout.classList.add('hidden');
+                    loginLayout.classList.remove('flex');
+                    dashboardLayout.classList.remove('hidden');
+                    dashboardLayout.classList.add('flex');
+                }
+
+                // Title Mapping untuk Dashboard
+                const titles = {
+                    'dashboard': 'Dashboard Overview',
+                    'properties': 'Manajemen Data Properti',
+                    'form': 'Tambah / Edit Properti',
+                    'leads': 'Inbox & Data Konsumen',
+                    'settings': 'Pengaturan Sistem'
+                };
+                document.getElementById('topbar-title').innerText = titles[viewId] || 'Dashboard';
+
+                // Hide all views
                 document.querySelectorAll('.page-view').forEach(el => {
                     el.classList.add('hidden');
                     el.classList.remove('block');
                 });
 
-                // Show target section (simulating new HTML page)
-                const targetEl = document.getElementById(`view-${viewId}`);
-                if(targetEl) {
-                    targetEl.classList.remove('hidden');
-                    targetEl.classList.add('block');
+                // Show target view
+                const targetView = document.getElementById(`view-${viewId}`);
+                if (targetView) {
+                    targetView.classList.remove('hidden');
+                    targetView.classList.add('block');
                 }
 
-                // Toggle Shared Elements based on page
-                const bottomCta = document.getElementById('shared-bottom-cta');
-                if(viewId === 'detail') {
-                    bottomCta.classList.add('hidden'); // Hide massive CTA on detail to focus on Agent
-                } else {
-                    bottomCta.classList.remove('hidden');
-                }
-
-                // Manage History/URL safely without triggering blob origin security errors
-                let newHash = '';
-                if(viewId === 'home') newHash = 'home';
-                else if (viewId === 'listing') newHash = 'listings';
-                else if (viewId === 'detail' && propertyId) newHash = `detail-${propertyId}`;
+                // Update Active State on Sidebar
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('bg-dark-800', 'text-white', 'active-nav');
+                    btn.querySelector('i').classList.remove('text-primary-500');
+                });
                 
-                if(pushHistory) {
-                    try {
-                        window.location.hash = newHash;
-                    } catch (e) {
-                        console.warn("History API restricted in this environment.", e);
-                    }
+                const activeBtn = document.getElementById(`nav-${viewId}`);
+                if (activeBtn) {
+                    activeBtn.classList.add('bg-dark-800', 'text-white', 'active-nav');
+                    activeBtn.querySelector('i').classList.add('text-primary-500');
                 }
 
-                // Scroll to top to simulate page refresh
-                window.scrollTo({ top: 0, behavior: 'auto' });
-
-                // Load detail data if needed
-                if (viewId === 'detail' && propertyId) {
-                    this.loadDetail(propertyId);
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth < 768) {
+                    this.toggleSidebar(true);
                 }
 
-                this.currentView = viewId;
+                // Scroll to top
+                document.getElementById('view-container').scrollTop = 0;
             },
 
-            toggleMobileMenu: function() {
-                const menu = document.getElementById('mobile-menu');
-                menu.classList.toggle('hidden');
-            },
-
-            waContact: function(message) {
-                const encodedMsg = encodeURIComponent(message);
-                window.open(`https://wa.me/${this.waNumber}?text=${encodedMsg}`, '_blank');
-            },
-
-            // Template Generator for Property Cards
-            generatePropertyCard: function(prop) {
-                const badgeHtml = prop.badges.map(b => `<span class="bg-primary-600 text-white text-[10px] uppercase font-bold px-2 py-1 rounded shadow-sm border border-primary-700/50">${b}</span>`).join('');
-                
-                return `
-                    <div class="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary-200 transition-all duration-300 flex flex-col group cursor-pointer" onclick="app.navigate('detail', '${prop.id}')">
-                        <!-- Image -->
-                        <div class="relative h-48 sm:h-52 overflow-hidden bg-gray-200">
-                            <img src="${prop.images[0]}" alt="${prop.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
-                                ${badgeHtml}
-                            </div>
+            // --- PUBLIC FUNCTIONS ---
+            renderPublicListings: function() {
+                const grid = document.getElementById('public-listing-grid');
+                grid.innerHTML = mockProperties.filter(p => p.status === 'Aktif').map(p => `
+                    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-5px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden hover:-translate-y-1 transition-transform cursor-pointer group flex flex-col" onclick="app.openModal('${p.id}')">
+                        <div class="h-48 bg-gray-200 relative overflow-hidden">
+                            <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-primary-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded shadow-sm">Ready</span>
                         </div>
-                        
-                        <!-- Content -->
-                        <div class="p-4 md:p-5 flex-1 flex flex-col">
-                            <div class="mb-1.5 flex justify-between items-start">
-                                <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider bg-gray-100 px-2 py-0.5 rounded">${prop.type}</div>
-                                <span class="text-[11px] font-bold text-orange-600 uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded border border-orange-100">${prop.status}</span>
-                            </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">${p.type}</div>
+                            <h3 class="font-extrabold text-gray-900 text-lg mb-1 leading-snug group-hover:text-primary-600 transition">${p.title}</h3>
+                            <p class="text-sm text-gray-500 mb-4 flex items-center"><i class="ph-fill ph-map-pin mr-1"></i> ${p.location}</p>
                             
-                            <h3 class="font-bold text-gray-900 text-base md:text-lg mb-1.5 line-clamp-2 leading-snug group-hover:text-primary-600 transition-colors">${prop.title}</h3>
-                            <p class="text-gray-500 text-sm mb-3 flex items-center truncate"><i class="ph-fill ph-map-pin text-gray-400 mr-1.5"></i> ${prop.location}</p>
-                            
-                            <div class="mt-auto bg-gray-50 rounded-lg p-3 border border-gray-100">
-                                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Harga / KPR Mulai</p>
-                                <div class="text-xl font-extrabold text-primary-600 leading-none">${prop.priceFormatted}</div>
-                                <p class="text-[12px] text-gray-600 font-medium mt-1.5 flex items-center">
-                                    <i class="ph-fill ph-calculator text-gray-400 mr-1"></i> Cicilan ${prop.installment}/bln
-                                </p>
+                            <div class="mt-auto bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Harga Mulai</p>
+                                <div class="text-xl font-black text-primary-600">${p.price}</div>
                             </div>
-                            
-                            <!-- Specs Row -->
-                            <div class="flex items-center gap-4 mt-4 text-gray-700 font-semibold px-1">
-                                <div class="flex items-center text-sm" title="Kamar Tidur"><i class="ph-fill ph-bed text-gray-400 mr-1.5 text-lg"></i> ${prop.bedrooms} KT</div>
-                                <div class="flex items-center text-sm" title="Kamar Mandi"><i class="ph-fill ph-shower text-gray-400 mr-1.5 text-lg"></i> ${prop.bathrooms} KM</div>
-                                <div class="flex items-center text-sm" title="Luas Bangunan/Tanah"><i class="ph-fill ph-house-line text-gray-400 mr-1.5 text-lg"></i> ${prop.buildingArea}/${prop.landArea}</div>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="px-4 pb-4 pt-2 flex gap-2">
-                            <button class="flex-[1] bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-bold py-2.5 rounded-lg text-sm transition">Detail</button>
-                            <button onclick="event.stopPropagation(); app.waContact('Halo admin, boleh minta brosur & detail untuk perumahan ${prop.title} yang harganya ${prop.priceFormatted}?')" class="flex-[1] bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-lg text-sm transition flex items-center justify-center shadow-md shadow-green-500/20">
-                                <i class="ph-fill ph-whatsapp-logo text-lg mr-1.5"></i> Tanya WA
-                            </button>
                         </div>
                     </div>
-                `;
+                `).join('');
             },
 
-            renderFeatured: function() {
-                const grid = document.getElementById('home-featured-grid');
-                const featuredHtml = propertyData.slice(0, 4).map(p => this.generatePropertyCard(p)).join('');
-                grid.innerHTML = featuredHtml;
-            },
+            openModal: function(id) {
+                const p = mockProperties.find(x => x.id === id);
+                if(!p) return;
 
-            renderListing: function() {
-                const grid = document.getElementById('listing-grid');
-                const listingHtml = propertyData.map(p => this.generatePropertyCard(p)).join('');
-                grid.innerHTML = listingHtml;
-            },
+                document.getElementById('modal-img').src = p.img;
+                document.getElementById('modal-type').innerText = p.type;
+                document.getElementById('modal-status').innerText = p.status;
+                document.getElementById('modal-title').innerText = p.title;
+                document.getElementById('modal-location').innerText = p.location;
+                document.getElementById('modal-price').innerText = p.price;
 
-            loadDetail: function(id) {
-                const prop = propertyData.find(p => p.id === id);
-                if(!prop) return;
+                document.getElementById('modal-wa-btn').onclick = () => {
+                    const msg = encodeURIComponent(`Halo admin, mau tanya detail untuk properti ${p.title} dengan harga ${p.price}?`);
+                    window.open(`https://wa.me/6281234567890?text=${msg}`, '_blank');
+                };
 
-                document.getElementById('detail-breadcrumb-title').innerText = prop.title;
-                document.getElementById('detail-title').innerText = prop.title;
-                document.getElementById('detail-address').innerText = prop.fullAddress;
-                document.getElementById('detail-price').innerText = prop.priceFormatted;
-                document.getElementById('detail-installment').innerText = `${prop.installment} / bulan`;
-                document.getElementById('detail-description').innerHTML = prop.description;
-
-                const badgeHtml = prop.badges.map(b => `<span class="bg-primary-600 text-white text-xs uppercase font-bold px-3 py-1.5 rounded shadow-sm inline-block border border-primary-700/50">${b}</span>`).join('');
-                document.getElementById('detail-badge-container').innerHTML = badgeHtml;
-
-                const mainImg = document.getElementById('detail-main-img');
-                mainImg.src = prop.images[0];
+                const m = document.getElementById('public-modal');
+                m.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden'); 
                 
-                const thumbContainer = document.getElementById('detail-thumbnails');
-                if(prop.images.length > 1) {
-                    thumbContainer.innerHTML = prop.images.map((img, index) => `
-                        <button onclick="document.getElementById('detail-main-img').src='${img}'" class="flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden border-2 border-transparent focus:border-primary-500 transition shadow-sm">
-                            <img src="${img}" class="w-full h-full object-cover" alt="Thumbnail ${index+1}">
-                        </button>
-                    `).join('');
-                    thumbContainer.classList.remove('hidden');
-                } else {
-                    thumbContainer.classList.add('hidden');
-                }
+                setTimeout(() => {
+                    m.classList.remove('opacity-0', 'translate-y-4');
+                    m.classList.add('opacity-100', 'translate-y-0');
+                }, 10);
+            },
 
-                // Indonesian realistic spec tags
-                const specs = [
-                    { icon: 'house', label: 'Tipe Properti', value: prop.type },
-                    { icon: 'scroll', label: 'Legalitas', value: prop.certificate },
-                    { icon: 'squares-four', label: 'Luas Tanah (LT)', value: `${prop.landArea} m²` },
-                    { icon: 'house-line', label: 'Luas Bangunan (LB)', value: `${prop.buildingArea} m²` },
-                    { icon: 'bed', label: 'Kamar Tidur', value: prop.bedrooms },
-                    { icon: 'shower', label: 'Kamar Mandi', value: prop.bathrooms },
-                    { icon: 'car', label: 'Carport Mobil', value: prop.carport },
-                    { icon: 'plug', label: 'Daya Listrik', value: '1300 Watt' }
+            closeModal: function() {
+                const m = document.getElementById('public-modal');
+                m.classList.remove('opacity-100', 'translate-y-0');
+                m.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    m.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }, 300);
+            },
+
+            // --- ADMIN FUNCTIONS ---
+            toggleSidebar: function(forceClose = false) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                
+                if (forceClose || !sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                } else {
+                    sidebar.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                }
+            },
+
+            renderPropertyTable: function() {
+                const tbody = document.getElementById('prop-list-tbody');
+                tbody.innerHTML = mockProperties.map(p => {
+                    let statusClass = 'bg-green-100 text-green-700';
+                    if (p.status === 'Draft') statusClass = 'bg-gray-100 text-gray-600';
+                    if (p.status === 'Terjual') statusClass = 'bg-red-100 text-red-700';
+
+                    return `
+                    <tr class="hover:bg-gray-50/50 group transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <img src="${p.img}" alt="thumbnail" class="w-14 h-10 rounded object-cover border border-gray-200 shadow-sm mr-3">
+                                <div>
+                                    <p class="font-bold text-gray-900 truncate w-48 lg:w-64">${p.title}</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">ID: ${p.id}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="font-bold text-gray-900">${p.price}</p>
+                            <p class="text-xs text-gray-500 mt-0.5">${p.type}</p>
+                        </td>
+                        <td class="px-6 py-4 text-gray-600">
+                            <div class="flex items-center"><i class="ph-fill ph-map-pin text-gray-400 mr-1.5"></i> ${p.location}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-wider ${statusClass}">${p.status}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button onclick="app.previewProperty('${p.title}')" title="Preview" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition"><i class="ph-fill ph-eye text-lg"></i></button>
+                                <button onclick="app.navigate('form')" title="Edit" class="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded transition"><i class="ph-fill ph-pencil-simple text-lg"></i></button>
+                                <button onclick="app.deleteConfirm('${p.title}')" title="Hapus" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition"><i class="ph-fill ph-trash text-lg"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            },
+
+            renderDashboardLeads: function() {
+                const tbody = document.getElementById('dash-leads-tbody');
+                const leads = [
+                    { name: 'Andi Susanto', prop: 'Griya Asri Cilebut', date: 'Hari ini, 09:15' },
+                    { name: 'Rina Gunawan', prop: 'Cluster Pesona Sawangan DP 0%', date: 'Hari ini, 08:30' },
+                    { name: 'Bpk. Hendra', prop: 'Townhouse Eksklusif Jagakarsa', date: 'Kemarin, 19:45' }
                 ];
-
-                document.getElementById('detail-specs-grid').innerHTML = specs.map(s => `
-                    <div class="border border-gray-200 rounded-xl p-3 flex flex-col justify-center items-start bg-white shadow-sm">
-                        <div class="flex items-center mb-1.5">
-                           <i class="ph-fill ph-${s.icon} text-xl text-primary-500 mr-2"></i>
-                           <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wide">${s.label}</span>
-                        </div>
-                        <span class="font-bold text-gray-900 text-sm pl-7">${s.value}</span>
-                    </div>
+                
+                tbody.innerHTML = leads.map(l => `
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-3 font-semibold text-gray-900">${l.name}</td>
+                        <td class="px-6 py-3 text-primary-600 text-xs sm:text-sm truncate max-w-[150px]">${l.prop}</td>
+                        <td class="px-6 py-3 text-xs text-gray-500">${l.date}</td>
+                        <td class="px-6 py-3">
+                            <button onclick="app.navigate('leads')" class="text-xs bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-2 py-1 rounded font-medium transition">Detail</button>
+                        </td>
+                    </tr>
                 `).join('');
+            },
 
-                document.getElementById('detail-facilities').innerHTML = prop.facilities.map(f => `
-                    <div class="flex items-center text-gray-700 font-medium">
-                        <i class="ph-fill ph-check-circle text-green-500 mr-2 text-xl"></i> ${f}
-                    </div>
-                `).join('');
+            saveProperty: function() {
+                alert("Berhasil! Data properti telah disimpan ke database.");
+                this.navigate('properties');
+            },
 
-                document.getElementById('detail-nearby').innerHTML = prop.nearby.map(n => `
-                    <li class="flex justify-between items-center border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                        <div class="flex items-center text-gray-700 font-medium">
-                            <i class="ph-fill ph-navigation-arrow text-primary-400 mr-3 text-lg"></i> ${n.name}
-                        </div>
-                        <span class="text-xs font-bold text-gray-900 bg-gray-100 border border-gray-200 px-2.5 py-1 rounded shadow-sm">${n.distance}</span>
-                    </li>
-                `).join('');
+            deleteConfirm: function(title) {
+                if(confirm(`Yakin ingin menghapus listing "${title}" secara permanen?`)) {
+                    alert('Listing berhasil dihapus.');
+                }
+            },
+
+            previewProperty: function(title) {
+                alert(`Memulai Preview Front-end untuk: \n"${title}"\n(Simulasi: Membuka tab baru ke website publik)`);
             }
         };
 
-        // Initialize App
+        // Initialize application when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
             app.init();
-            document.getElementById('mobile-menu-btn').addEventListener('click', () => { app.toggleMobileMenu(); });
         });
     </script>
 </body>
